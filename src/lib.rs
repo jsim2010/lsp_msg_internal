@@ -11,7 +11,7 @@ pub enum Elective<T> {
     /// Indicates a missing field.
     Absent,
     /// Indicates a present field.
-    Present(T)
+    Present(T),
 }
 
 impl<T> Elective<T> {
