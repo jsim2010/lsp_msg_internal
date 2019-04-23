@@ -1,0 +1,6 @@
+language: rust
+os: windows
+cache: cargo
+install:
+  - cargo-cmd -V || cargo install cargo-cmd
+script: cargo cmd eval
