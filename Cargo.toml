@@ -24,10 +24,13 @@ preeval = """
 # Evaluates source code for issues.
 
 # Clippy command forbids all rustc and clippy lints except the following:
-# -D rust_2018_idioms: #[derive(Deserialize)] adds an allow.
-# -D unused-qualifications: #[derive(Default)] adds an allow.
-# -D unused-attributes: #[derive(Deserialize)] adds an allow.
-# -A clippy::implicit-return: This goes against rust convention and would require return calls in inconvenient places (e.g. closures).
+# -D rust_2018_idioms - #[lsp_kind] adds an allow.
+# -D unused-qualifications - #[lsp_kind] adds an allow.
+# -D unused-attributes - #[lsp_kind] adds an allow.
+# -D clippy::useless-attribute - #[lsp_kind] adds an allow.
+# -D clippy::missing-const-for-fn - #[derive(Default)] adds a function that can be const.
+# -A clippy::missing-inline-in-public-items - #[lsp_kind] adds possible inline functions.
+# -A clippy::implicit-return - This goes against rust convention and would require return calls in inconvenient places (e.g. closures).
 eval = """
 set CLIPPY_DISABLE_DOCS_LINKS=1\
 && cargo-clippy clippy -- \
@@ -54,16 +57,19 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -F unused-must-use \
     -F unused-unsafe \
     -F path-statements \
-    -F unused-macros \
     -F unused-allocation \
     -F unused-doc-comments \
-    -F unused-extern-crates \
     -F unused-features \
     -F unused-labels \
     -F unused-parens \
-    -F clippy::all \
     -F clippy::pedantic \
-    -F clippy::nursery \
+    -F clippy::empty-line-after-outer-attr \
+    -F clippy::fallible-impl-from \
+    -F clippy::mutex-integer \
+    -F clippy::needless-borrow \
+    -F clippy::panicking-unwrap \
+    -F clippy::redundant-clone \
+    -F clippy::unnecessary-unwrap \
     -F clippy::cargo \
     -F clippy::clone-on-ref-ptr \
     -F clippy::dbg-macro \
@@ -76,7 +82,6 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -F clippy::integer-arithmetic \
     -F clippy::mem-forget \
     -F clippy::missing-docs-in-private-items \
-    -F clippy::missing-inline-in-public-items \
     -F clippy::multiple-inherent-impl \
     -F clippy::option-unwrap-used \
     -F clippy::print-stdout \
@@ -88,9 +93,13 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -F clippy::use-debug \
     -F clippy::wildcard-enum-match-arm \
     -F clippy::wrong-pub-self-convention \
+    -D unused-macros \
     -D rust-2018-idioms \
     -D unused-attributes \
     -D unused-qualifications \
+    -D clippy::useless-attribute \
+    -D clippy::missing-const-for-fn \
+    -A clippy::missing-inline-in-public-items \
     -A clippy::implicit-return \
 && cargo-fmt -- --check \
 && fc r README.md \
