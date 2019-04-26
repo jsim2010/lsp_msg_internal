@@ -17,16 +17,16 @@
 use lsp_msg_derive::lsp_kind;
 // Required by `lsp_kind`.
 use serde::{Deserialize, Serialize};
+use spec::spec;
 
 /// Represents an optional field of an **LSP object**.
 ///
 /// Is useful where an **absent** field represents functionality different from the default
 /// functionality of the field.
-///
-/// # Requirements
-/// ## REQ-Elective.serde
-/// > `Elective` shall implement the `Deserialize` and `Serialize` traits, distinguishing between
-/// the field being **absent** and the field being **present**.
+#[spec(
+    name = "serde",
+    shall = "implement the `Deserialize` and `Serialize` traits, distinguishing between the field being **absent** and the field being **present**"
+)]
 #[lsp_kind]
 pub enum Elective<T> {
     /// Indicates a missing field.
@@ -35,16 +35,16 @@ pub enum Elective<T> {
     Present(T),
 }
 
-/// # Requirements
-/// ## REQ-Elective.absent
-/// > `Elective` shall implement the functionality to check if an instance is **absent**.
-///
-/// ```
-/// use lsp_msg_internal::Elective;
-///
-/// assert!(Elective::<u8>::Absent.is_absent());
-/// assert!(!Elective::Present(0).is_absent());
-/// ```
+#[spec(
+    name = "absent",
+    shall = "implement the functionality to check if an instance is **absent**",
+    cert {
+        use lsp_msg_internal::Elective;
+
+        assert!(Elective::<u8>::Absent.is_absent());
+        assert!(!Elective::Present(0).is_absent());
+    }
+)]
 impl<T> Elective<T> {
     /// If the `Elective` is **absent**.
     pub fn is_absent(&self) -> bool {
@@ -55,15 +55,15 @@ impl<T> Elective<T> {
     }
 }
 
-/// # Requirements
-/// ## REQ-Elective.default
-/// > `Elective` shall implement the `Default` trait to return an **absent** field.
-///
-/// ```
-/// use lsp_msg_internal::Elective;
-///
-/// assert!(Elective::<u8>::default().is_absent())
-/// ```
+#[spec(
+    name = "default",
+    shall = "implement the `Default` trait to return an **absent** field.",
+    cert {
+        use lsp_msg_internal::Elective;
+
+        assert!(Elective::<u8>::default().is_absent())
+    }
+)]
 impl<T> Default for Elective<T> {
     #[allow(clippy::missing_const_for_fn)] // must follow Default::default().
     fn default() -> Self {
@@ -72,10 +72,10 @@ impl<T> Default for Elective<T> {
 }
 
 /// Represents a type of content.
-///
-/// # Requirements
-/// ## REQ-MarkupKind.serde
-/// > `MarkupKind` shall implement the `Deserialize` and `Serialize` traits.
+#[spec(
+    name = "serde",
+    shall = "implement the `Deserialize` and `Serialize` traits."
+)]
 #[lsp_kind]
 #[allow(clippy::missing_const_for_fn)] // #[derive(Clone)] adds function that could be const.
 #[derive(Clone, Copy)]
