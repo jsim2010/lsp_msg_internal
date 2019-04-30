@@ -25,7 +25,18 @@ use spec::spec;
 /// functionality of the field.
 #[spec(
     name = "serde",
-    shall = "implement the `Deserialize` and `Serialize` traits, distinguishing between the field being **absent** and the field being **present**"
+    shall = "implement the `Deserialize` and `Serialize` traits to differentiate between an **absent** field and a **present** field",
+    cert {
+        use lsp_msg_internal::Elective;
+        use serde_test::{assert_tokens, Token};
+
+        //assert_tokens(&Elective::<u8>::Absent, &[
+        //    Token::Unit,
+        //]);
+        //assert_tokens(&Elective::Present(0_u8), &[
+        //    Token::U8(0),
+        //]);
+    }
 )]
 #[lsp_kind]
 pub enum Elective<T> {
@@ -57,7 +68,7 @@ impl<T> Elective<T> {
 
 #[spec(
     name = "default",
-    shall = "implement the `Default` trait to return an **absent** field.",
+    shall = "implement the `Default` trait to return an **absent** field",
     cert {
         use lsp_msg_internal::Elective;
 
@@ -74,9 +85,20 @@ impl<T> Default for Elective<T> {
 /// Represents a type of content.
 #[spec(
     name = "serde",
-    shall = "implement the `Deserialize` and `Serialize` traits."
+    shall = "implement the `Deserialize` and `Serialize` traits",
+    cert {
+        use lsp_msg_internal::MarkupKind;
+        use serde_test::{assert_tokens, Token};
+
+        //assert_tokens(&MarkupKind::Plaintext, &[
+        //    Token::UnitVariant { name: "MarkupKind", variant: "plaintext" },
+        //]);
+        //assert_tokens(&MarkupKind::Markdown, &[
+        //    Token::UnitVariant { name: "MarkupKind", variant: "markdown" },
+        //]);
+    }
 )]
-#[lsp_kind]
+#[lsp_kind(type = "string")]
 #[allow(clippy::missing_const_for_fn)] // #[derive(Clone)] adds function that could be const.
 #[derive(Clone, Copy)]
 pub enum MarkupKind {

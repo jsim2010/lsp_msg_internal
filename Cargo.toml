@@ -11,9 +11,12 @@ categories = ["data-structures"]
 readme = "README.md"
 
 [dependencies]
-lsp_msg_derive = "0.1.0"
+lsp_msg_derive = "0.2.0"
 serde = { version = "1.0.90", features = ["derive"] }
-spec = "0.1.0"
+spec = "0.2.0"
+
+[dev-dependencies]
+serde_test = "1.0.90"
 
 [package.metadata.commands]
 preeval = """
@@ -32,6 +35,7 @@ preeval = """
 # -D clippy::missing-const-for-fn - #[derive(Default)] adds a function that can be const.
 # -A clippy::missing-inline-in-public-items - #[lsp_kind] adds possible inline functions.
 # -A clippy::implicit-return - This goes against rust convention and would require return calls in inconvenient places (e.g. closures).
+# -A clippy::multiple-crate-versions - Often caused by dependencies and thus not possible to fix.
 eval = """
 set CLIPPY_DISABLE_DOCS_LINKS=1\
 && cargo-clippy clippy -- \
@@ -64,6 +68,8 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -F unused-labels \
     -F unused-parens \
     -F clippy::pedantic \
+    -F clippy::cargo-common-metadata \
+    -F clippy::wildcard-dependencies \
     -F clippy::empty-line-after-outer-attr \
     -F clippy::fallible-impl-from \
     -F clippy::mutex-integer \
@@ -71,7 +77,6 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -F clippy::panicking-unwrap \
     -F clippy::redundant-clone \
     -F clippy::unnecessary-unwrap \
-    -F clippy::cargo \
     -F clippy::clone-on-ref-ptr \
     -F clippy::dbg-macro \
     -F clippy::decimal-literal-representation \
@@ -102,6 +107,7 @@ set CLIPPY_DISABLE_DOCS_LINKS=1\
     -D clippy::missing-const-for-fn \
     -A clippy::missing-inline-in-public-items \
     -A clippy::implicit-return \
+    -A clippy::multiple-crate-versions \
 && cargo-fmt -- --check \
 && fc r README.md \
 && cargo test --verbose --all-features\
