@@ -1,6 +1,6 @@
 [package]
 name = "lsp_msg_internal"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Justin Simerly <justinsimerly1992@gmail.com>"]
 edition = "2018"
 description = "Definitions used for testing lsp_msg_derive"
@@ -11,7 +11,7 @@ categories = ["data-structures"]
 readme = "README.md"
 
 [dependencies]
-lsp_msg_derive = "0.2.0"
+lsp_msg_derive = "0.3.0"
 serde = { version = "1.0.90", features = ["derive"] }
 spec = "0.2.0"
 
