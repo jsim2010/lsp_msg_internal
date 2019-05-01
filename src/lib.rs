@@ -30,12 +30,12 @@ use spec::spec;
         use lsp_msg_internal::Elective;
         use serde_test::{assert_tokens, Token};
 
-        //assert_tokens(&Elective::<u8>::Absent, &[
-        //    Token::Unit,
-        //]);
-        //assert_tokens(&Elective::Present(0_u8), &[
-        //    Token::U8(0),
-        //]);
+        assert_tokens(&Elective::<u8>::Absent, &[
+            Token::Unit,
+        ]);
+        assert_tokens(&Elective::Present(0_u8), &[
+            Token::U8(0),
+        ]);
     }
 )]
 #[lsp_kind]
@@ -90,12 +90,12 @@ impl<T> Default for Elective<T> {
         use lsp_msg_internal::MarkupKind;
         use serde_test::{assert_tokens, Token};
 
-        //assert_tokens(&MarkupKind::Plaintext, &[
-        //    Token::UnitVariant { name: "MarkupKind", variant: "plaintext" },
-        //]);
-        //assert_tokens(&MarkupKind::Markdown, &[
-        //    Token::UnitVariant { name: "MarkupKind", variant: "markdown" },
-        //]);
+        assert_tokens(&MarkupKind::Plaintext, &[
+            Token::UnitVariant { name: "MarkupKind", variant: "plaintext" },
+        ]);
+        assert_tokens(&MarkupKind::Markdown, &[
+            Token::UnitVariant { name: "MarkupKind", variant: "markdown" },
+        ]);
     }
 )]
 #[lsp_kind(type = "string")]
